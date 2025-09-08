@@ -1,7 +1,7 @@
 var timer = new easytimer.Timer();
 
 
-$('#countdownExample .values').html('00:02:00');
+$('#countdownExample .values').html('02:00');
 
 $('.startButton').click(function () {
   timer.start({countdown: true, startValues: {minutes : 2}});
@@ -9,12 +9,12 @@ $('.startButton').click(function () {
 
 $('.resetButton').click(function () {
   timer.reset();
-  $('#countdownExample .values').html('00:02:00');
+  $('#countdownExample .values').html('02:00');
   timer.pause();
 });
 
 timer.addEventListener('secondsUpdated', function (e) {
-    $('#countdownExample .values').html(timer.getTimeValues().toString());
+    $('#countdownExample .values').html(timer.getTimeValues().toString(['minutes', 'seconds']));
 });
 
 timer.addEventListener('targetAchieved', function (e) {
