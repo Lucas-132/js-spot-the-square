@@ -1,34 +1,33 @@
 var timer = new easytimer.Timer();
 
-
-$('#countdown .countdown-value').html('02:00');
+$("#countdown .countdown-value").html("02:00");
 
 var timerRunning = false;
 
-$('.startButton').click(function () {
+$(".startButton").click(function () {
   if (!timerRunning) {
-    timer.start({countdown: true, startValues: {minutes : 2}});
+    timer.start({ countdown: true, startValues: { minutes: 2 } });
     timerRunning = true;
-    $(this).text('Reset');
+    $(this).text("Reset");
   } else {
     timer.reset();
-    $('#countdown .countdown-value').html('02:00');
+    $("#countdown .countdown-value").html("02:00");
     timer.pause();
     timerRunning = false;
-    $(this).text('Start');
+    $(this).text("Start");
   }
 });
 
-
-
-timer.addEventListener('secondsUpdated', function (e) {
-    $('#countdown .countdown-value').html(timer.getTimeValues().toString(['minutes', 'seconds']));
+timer.addEventListener("secondsUpdated", function (e) {
+  $("#countdown .countdown-value").html(
+    timer.getTimeValues().toString(["minutes", "seconds"])
+  );
 });
 
-timer.addEventListener('targetAchieved', function (e) {
-    $('#countdown .countdown-value').html('GG');
-    timerRunning = false;
-    $('.startButton').text('Start');
+timer.addEventListener("targetAchieved", function (e) {
+  $("#countdown .countdown-value").html("GG");
+  timerRunning = false;
+  $(".startButton").text("Start");
 });
 
 const allTheBox = document.getElementsByTagName("button");
