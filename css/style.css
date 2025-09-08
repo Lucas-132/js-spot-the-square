@@ -7,7 +7,6 @@ body {
 }
 
 .chessboard {
-  border: 1px solid black;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -25,7 +24,7 @@ body {
 }
 
 .colored-box {
-  background-color: rgb(73, 73, 210);
+  background-color: rgb(70, 70, 199);
 }
 
 button {
