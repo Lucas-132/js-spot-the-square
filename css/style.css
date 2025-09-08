@@ -1,5 +1,7 @@
 @import url(reset.css);
+
 body{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     flex-direction: column;
     gap:80px;
@@ -35,6 +37,7 @@ strong{
     align-content: center;
     text-align: center;
     font-size: large;
+    border-radius: 10px;
 }
 
 header{
