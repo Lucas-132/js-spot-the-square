@@ -1,1 +1,19 @@
 @import url(reset.css);
+
+.chessboard {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.chessboard > * {
+  border: 1px solid blue;
+  display: flex;
+}
+
+.column > * {
+  border: 1px solid red;
+  min-width: 20px;
+  min-height: 20px;
+  text-align: center;
+}
