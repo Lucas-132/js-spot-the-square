@@ -48,6 +48,7 @@ strong {
   text-align: center;
   margin: 16px;
   font-weight: bold;
+  font-size: 2em;
 }
 
 .main-menu {
@@ -132,7 +133,7 @@ footer {
   }
 }
 
-@media only screen and (max-height: 550px) {
+@media only screen and (max-height: 600px) {
   footer {
     display: none;
   }
@@ -157,4 +158,13 @@ button:hover {
 
 #score-menu {
   text-align: center;
+}
+
+#startButton {
+  margin-top: 24px;
+  text-transform: uppercase;
+}
+
+#best-score {
+  color: rgb(158, 158, 158);
 }
