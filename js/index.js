@@ -1,4 +1,3 @@
-import {currentBox, randomizeBox, randomizedBox} from './boxRandomizer.js';
 
 function getDurationFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -9,72 +8,116 @@ function getDurationFromUrl() {
   return 2; // valeur par défaut
 }
 
+const params = new URLSearchParams(window.location.search);
+const mode = params.get("mode");
+const duration = getDurationFromUrl();
+const score = document.getElementById("score-number");
+const allTheBox = document.getElementsByClassName("case");
 var timer = new easytimer.Timer();
 
-var duration = getDurationFromUrl();
-
-$("#countdown .countdown-value").html(
-  duration.toString().padStart(2, "0") + ":00"
-);
-
-var timerRunning = false;
-
-
-///////////////////////////////////////////////////////////////////////
-///                                                                 ///
-///                 GAME START                                      ///
-///                                                                 ///
-///////////////////////////////////////////////////////////////////////
-
-const score = document.getElementById("score-number")
-
-$("#startButton").click(function () {
-  score.innerHTML = "0"
-
-  if (!timerRunning) {
-    timer.start({ countdown: true, startValues: { minutes: duration } });
-    timerRunning = true;
-    $(this).text("Recommencer");
-
-    randomizeBox()
-  } else {
-    timer.reset();
-    $("#countdown .countdown-value").html(
-      duration.toString().padStart(2, "0") + ":00"
-    );
-    timer.pause();
-    timerRunning = false;
-    $(this).text("Commencer");
-
-    randomizedBox.innerHTML = "??"
-  }
-
-});
-
-timer.addEventListener("secondsUpdated", function (e) {
+if (mode === "survival") {
+  survivalMode();
+} else {
+  // Mode chrono classique
   $("#countdown .countdown-value").html(
-    timer.getTimeValues().toString(["minutes", "seconds"])
+    duration.toString().padStart(2, "0") + ":00"
   );
-});
 
-timer.addEventListener("targetAchieved", function (e) {
-  $("#countdown .countdown-value").html("GG");
-  timerRunning = false;
-  $(".startButton").text("Start");
-});
+  var timerRunning = false;
 
-const allTheBox = document.getElementsByTagName("button");
+  $("#startButton").off().click(function () {
+    score.innerHTML = "0";
+    if (!timerRunning) {
+      timer.start({ countdown: true, startValues: { minutes: duration } });
+      timerRunning = true;
+      $(this).text("Recommencer");
+      randomizeBox();
+    } else {
+      timer.reset();
+      $("#countdown .countdown-value").html(
+        duration.toString().padStart(2, "0") + ":00"
+      );
+      timer.pause();
+      timerRunning = false;
+      $(this).text("Commencer");
+    }
+  });
 
-const boxClicked = (e) => {
-  console.log(e.target.id);
+  timer.addEventListener("secondsUpdated", function (e) {
+    $("#countdown .countdown-value").html(
+      timer.getTimeValues().toString(["minutes", "seconds"])
+    );
+  });
 
-  // checking if player clicked on the correct box:
-  if (e.target.id === currentBox){
-    randomizeBox()
-    score.innerHTML = parseInt(score.innerHTML)+1
+  timer.addEventListener("targetAchieved", function (e) {
+    $("#countdown .countdown-value").html("GG");
+    timerRunning = false;
+    $("#startButton").text("Commencer");
+  });
+
+  // Ajoute les listeners sur les cases UNIQUEMENT en mode chrono
+  for (let box of allTheBox) {
+    box.onclick = (e) => {
+      if (e.target.id === currentBox) {
+        randomizeBox();
+        score.innerHTML = parseInt(score.innerHTML) + 1;
+      }
+    };
   }
-};
+}
 
-for (let box of allTheBox) {
-  box.addEventListener("click", boxClicked);
+function survivalMode() {
+  let survivalTime = 3;
+  let minTime = 1;
+  let timeDecrease = 0.2;
+  let currentTimeout = null;
+  let gameOver = false;
+  let lives = 3;
+
+  score.innerHTML = "0";
+  $("#startButton").hide();
+  $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+
+  function nextRound() {
+    if (gameOver) return;
+    randomizeBox();
+    $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+
+    if (currentTimeout) clearTimeout(currentTimeout);
+    currentTimeout = setTimeout(() => {
+      loseLife();
+    }, survivalTime * 1000);
+  }
+
+  function loseLife() {
+    lives--;
+    if (lives <= 0) {
+      endSurvival();
+    } else {
+      $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+      nextRound();
+    }
+  }
+
+  function endSurvival() {
+    gameOver = true;
+    $("#countdown .countdown-value").html("Perdu !");
+    $("#startButton").show().text("Rejouer").off().click(() => window.location.reload());
+  }
+
+  // Ajoute les listeners sur les cases UNIQUEMENT en mode survie
+  for (let box of allTheBox) {
+    box.onclick = (e) => {
+      if (gameOver) return;
+      if (e.target.id === currentBox) {
+        score.innerHTML = parseInt(score.innerHTML) + 1;
+        survivalTime = Math.max(minTime, survivalTime - timeDecrease);
+        nextRound();
+      } else {
+        loseLife();
+      }
+    };
+  }
+
+  nextRound();
 }
