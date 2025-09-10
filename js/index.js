@@ -1,5 +1,7 @@
-import { currentBox, randomizeBox, randomizedBox} from "../js/boxRandomizer.js";
+// --- IMPORTS ---
+import { currentBox, randomizeBox, randomizedBox } from "../js/boxRandomizer.js";
 
+// --- UTILS ---
 function getDurationFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const duration = parseInt(params.get("duration"), 10);
@@ -9,6 +11,7 @@ function getDurationFromUrl() {
   return 2; // valeur par défaut
 }
 
+// --- GLOBALS ---
 const params = new URLSearchParams(window.location.search);
 const mode = params.get("mode");
 const duration = getDurationFromUrl();
@@ -16,10 +19,19 @@ const score = document.getElementById("score-number");
 const allTheBox = document.getElementsByClassName("case");
 var timer = new easytimer.Timer();
 
+// --- MAIN ---
 if (mode === "survival") {
-  survivalMode();
+  $("#countdown .countdown-value").html("3.00s | Vies : 3");
+  $("#startButton").off().show().text("Commencer").click(function () {
+    survivalMode();
+    $(this).hide();
+  });
 } else {
-  // Mode chrono classique
+  chronoMode();
+}
+
+// --- CHRONO MODE ---
+function chronoMode() {
   $("#countdown .countdown-value").html(
     duration.toString().padStart(2, "0") + ":00"
   );
@@ -58,7 +70,7 @@ if (mode === "survival") {
     $("#startButton").text("Commencer");
   });
 
-  // Ajoute les listeners sur les cases UNIQUEMENT en mode chrono
+  // Listeners sur les cases UNIQUEMENT en mode chrono
   for (let box of allTheBox) {
     box.onclick = (e) => {
       if (e.target.id === currentBox) {
@@ -69,6 +81,7 @@ if (mode === "survival") {
   }
 }
 
+// --- SURVIVAL MODE ---
 function survivalMode() {
   let survivalTime = 3;
   let minTime = 1;
@@ -80,7 +93,6 @@ function survivalMode() {
   let roundStart = null;
 
   score.innerHTML = "0";
-  $("#startButton").hide();
   $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
 
   function updateCountdownDisplay() {
@@ -126,7 +138,7 @@ function survivalMode() {
     $("#startButton").show().text("Rejouer").off().click(() => window.location.reload());
   }
 
-  // Ajoute les listeners sur les cases UNIQUEMENT en mode survie
+  // Listeners sur les cases UNIQUEMENT en mode survie
   for (let box of allTheBox) {
     box.onclick = (e) => {
       if (gameOver) return;
