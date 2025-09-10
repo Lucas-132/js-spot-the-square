@@ -1,4 +1,8 @@
-import { currentBox, randomizeBox, randomizedBox} from "../js/boxRandomizer.js";
+import {
+  currentBox,
+  randomizeBox,
+  randomizedBox,
+} from "../js/boxRandomizer.js";
 
 function getDurationFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -81,20 +85,26 @@ function survivalMode() {
 
   score.innerHTML = "0";
   $("#startButton").hide();
-  $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+  $("#countdown .countdown-value").html(
+    survivalTime.toFixed(2) + "s | Vies : " + lives
+  );
 
   function updateCountdownDisplay() {
     if (!roundStart) return;
     const elapsed = (Date.now() - roundStart) / 1000;
     const remaining = Math.max(0, survivalTime - elapsed);
-    $("#countdown .countdown-value").html(remaining.toFixed(2) + "s | Vies : " + lives);
+    $("#countdown .countdown-value").html(
+      remaining.toFixed(2) + "s | Vies : " + lives
+    );
   }
 
   function nextRound() {
     if (gameOver) return;
     randomizeBox();
     roundStart = Date.now();
-    $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+    $("#countdown .countdown-value").html(
+      survivalTime.toFixed(2) + "s | Vies : " + lives
+    );
 
     if (currentTimeout) clearTimeout(currentTimeout);
     if (currentInterval) clearInterval(currentInterval);
@@ -114,7 +124,9 @@ function survivalMode() {
     if (lives <= 0) {
       endSurvival();
     } else {
-      $("#countdown .countdown-value").html(survivalTime.toFixed(2) + "s | Vies : " + lives);
+      $("#countdown .countdown-value").html(
+        survivalTime.toFixed(2) + "s | Vies : " + lives
+      );
       nextRound();
     }
   }
@@ -123,7 +135,11 @@ function survivalMode() {
     gameOver = true;
     if (currentInterval) clearInterval(currentInterval);
     $("#countdown .countdown-value").html("Perdu !");
-    $("#startButton").show().text("Rejouer").off().click(() => window.location.reload());
+    $("#startButton")
+      .show()
+      .text("Rejouer")
+      .off()
+      .click(() => window.location.reload());
   }
 
   // Ajoute les listeners sur les cases UNIQUEMENT en mode survie
