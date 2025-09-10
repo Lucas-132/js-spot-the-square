@@ -1,5 +1,8 @@
 # js-spot-the-square
+# Used technologies
+In order to achieve this project, we used Html CSS and Javascript so as to make this app web friendly. We tried to divide our Javascript as much as possible using multiple files inside which we would mainly define all functions needed for the main script to work properly. 
 
+# Game User's Manual
 ## What is it ?
 Here you will find our attempt to recreate "Vision" game from chess.com.
 It contains multiple game modes including two time trial modes and one survival mode.
