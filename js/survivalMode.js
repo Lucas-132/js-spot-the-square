@@ -11,7 +11,6 @@ function survivalMode() {
   let roundStart = null;
 
   score.innerHTML = "0";
-  $("#startButton").hide();
   $("#countdown .countdown-value").html(
     survivalTime.toFixed(2) + "s | Vies : " + lives
   );
@@ -69,7 +68,7 @@ function survivalMode() {
       .click(() => window.location.reload());
   }
 
-  // Listeners sur les cases
+  // Listeners sur les cases UNIQUEMENT en mode survie
   for (let box of allTheBox) {
     box.onclick = (e) => {
       if (gameOver) return;

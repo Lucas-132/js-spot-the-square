@@ -5,7 +5,15 @@ import { chronoMode } from "./chronoMode.js";
 import { survivalMode } from "./survivalMode.js";
 
 if (mode === "survival") {
-  survivalMode();
+  $("#countdown .countdown-value").html("3.00s | Vies : 3");
+  $("#startButton")
+    .off()
+    .show()
+    .text("Commencer")
+    .click(function () {
+      survivalMode();
+      $(this).hide();
+    });
 } else {
   chronoMode();
 }
