@@ -1,15 +1,19 @@
 import {
-  duration,
   score,
   allTheBox,
   timer,
   randomizeBox,
   currentBox,
+  mode,
+  highscoreDisplayer,
+  initializeHighscore,
+  updateHighscore
 } from "./setup.js";
 
 function chronoMode() {
+  console.info(mode);
   $("#countdown .countdown-value").html(
-    duration.toString().padStart(2, "0") + ":00"
+    mode.toString().padStart(2, "0") + ":00"
   );
 
   let timerRunning = false;
@@ -19,14 +23,14 @@ function chronoMode() {
     .click(function () {
       score.innerHTML = "0";
       if (!timerRunning) {
-        timer.start({ countdown: true, startValues: { minutes: duration } });
+        timer.start({ countdown: true, startValues: { minutes: mode } });
         timerRunning = true;
         $(this).text("Recommencer");
         randomizeBox();
       } else {
         timer.reset();
         $("#countdown .countdown-value").html(
-          duration.toString().padStart(2, "0") + ":00"
+          mode.toString().padStart(2, "0") + ":00"
         );
         timer.pause();
         timerRunning = false;
@@ -52,6 +56,7 @@ function chronoMode() {
       if (e.target.id === currentBox) {
         randomizeBox();
         score.innerHTML = parseInt(score.innerHTML) + 1;
+        updateHighscore(mode);
       }
     };
   }
