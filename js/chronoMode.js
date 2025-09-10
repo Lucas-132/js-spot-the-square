@@ -11,6 +11,14 @@ import {
 } from "./setup.js";
 
 function chronoMode() {
+
+  if (mode === "1"){
+    highscoreDisplayer.innerHTML = sessionStorage.highscore1Min
+  }
+  else if (mode === "2"){
+    highscoreDisplayer.innerHTML = sessionStorage.highscore2Min
+  }
+
   console.info(mode);
   $("#countdown .countdown-value").html(
     mode.toString().padStart(2, "0") + ":00"
