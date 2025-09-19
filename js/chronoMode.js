@@ -31,7 +31,7 @@ function chronoMode() {
       if (!timerRunning) {
         timer.start({ countdown: true, startValues: { minutes: mode } });
         timerRunning = true;
-        $(this).text("Recommencer");
+        $(this).text("arreter");
         randomizeBox();
       } else {
         timer.reset();
