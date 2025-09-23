@@ -11,57 +11,66 @@ import {
 } from "./setup.js";
 
 function chronoMode() {
+  // Affichage du highscore selon le mode
   if (mode === "1") {
-    highscoreDisplayer.innerHTML = localStorage.highscore1Min;
+    highscoreDisplayer.textContent = localStorage.highscore1Min;
   } else if (mode === "2") {
-    highscoreDisplayer.innerHTML = localStorage.highscore2Min;
+    highscoreDisplayer.textContent = localStorage.highscore2Min;
   }
 
-  console.info(mode);
-  $("#countdown .countdown-value").html(
-    mode.toString().padStart(2, "0") + ":00"
-  );
+  // Initialisation du chrono affiché
+  const countdownValue = document.querySelector("#countdown .countdown-value");
+  countdownValue.textContent = mode.toString().padStart(2, "0") + ":00";
 
   let timerRunning = false;
 
-  $("#startButton")
-    .off()
-    .click(function () {
-      score.innerHTML = "0";
-      if (!timerRunning) {
-        timer.start({ countdown: true, startValues: { minutes: mode } });
-        timerRunning = true;
-        $(this).text("arreter");
-        randomizeBox();
-      } else {
-        timer.reset();
-        $("#countdown .countdown-value").html(
-          mode.toString().padStart(2, "0") + ":00"
-        );
-        timer.pause();
-        timerRunning = false;
-        $(this).text("Commencer");
-      }
-    });
+  // Bouton démarrer / recommencer
+  const startButton = document.getElementById("startButton");
+  startButton.replaceWith(startButton.cloneNode(true)); // supprime anciens listeners
+  const newStartButton = document.getElementById("startButton");
 
-  timer.addEventListener("secondsUpdated", function () {
-    $("#countdown .countdown-value").html(
-      timer.getTimeValues().toString(["minutes", "seconds"])
-    );
+  newStartButton.addEventListener("click", () => {
+    score.textContent = "0";
+
+    if (!timerRunning) {
+      timer.start({
+        countdown: true,
+        startValues: { minutes: parseInt(mode) },
+      });
+      timerRunning = true;
+      newStartButton.textContent = "Recommencer";
+      randomizeBox();
+    } else {
+
+      timer.reset();
+      countdownValue.textContent = mode.toString().padStart(2, "0") + ":00";
+      timer.pause();
+      timerRunning = false;
+      newStartButton.textContent = "Commencer";
+    }
   });
 
+  // Mise à jour du chrono à chaque seconde
+  timer.addEventListener("secondsUpdated", function () {
+    countdownValue.textContent = timer
+      .getTimeValues()
+      .toString(["minutes", "seconds"]);
+  });
+
+  // Quand le chrono atteint 0
   timer.addEventListener("targetAchieved", function () {
-    $("#countdown .countdown-value").html("GG");
+    countdownValue.textContent = "GG";
     timerRunning = false;
-    $("#startButton").text("Commencer");
+    newStartButton.textContent = "Commencer";
   });
 
   // Listeners sur les cases
   for (let box of allTheBox) {
     box.onclick = (e) => {
+      if (!timerRunning) return; 
       if (e.target.id === currentBox) {
         randomizeBox();
-        score.innerHTML = parseInt(score.innerHTML) + 1;
+        score.textContent = parseInt(score.textContent) + 1;
         updateHighscore(mode);
       }
     };

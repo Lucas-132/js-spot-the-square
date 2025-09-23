@@ -11,43 +11,40 @@ import {
 
 export function survivalMode() {
   let survivalTime = 3;
-  let minTime = 1;
-  let timeDecrease = 0.2;
+  const minTime = 1;
+  const timeDecrease = 0.2;
   let currentTimeout = null;
   let currentInterval = null;
   let gameOver = false;
   let lives = 3;
   let roundStart = null;
 
-  score.innerHTML = "0";
-  $("#countdown .countdown-value").html(
-    `${survivalTime.toFixed(2)}s | Vies : ${lives}`
-  );
+  score.textContent = "0";
+
+  const countdownValue = document.querySelector("#countdown .countdown-value");
+  const startButton = document.getElementById("startButton");
 
   function updateCountdownDisplay() {
     if (!roundStart) return;
     const elapsed = (Date.now() - roundStart) / 1000;
     const remaining = Math.max(0, survivalTime - elapsed);
-    $("#countdown .countdown-value").html(
-      `${remaining.toFixed(2)}s | Vies : ${lives}`
-    );
+    countdownValue.textContent = `${remaining.toFixed(2)}s | Vies : ${lives}`;
   }
 
   function nextRound() {
     if (gameOver) return;
+
     randomizeBox();
     roundStart = Date.now();
-    $("#countdown .countdown-value").html(
-      `${survivalTime.toFixed(2)}s | Vies : ${lives}`
-    );
+    countdownValue.textContent = `${survivalTime.toFixed(2)}s | Vies : ${lives}`;
 
     if (currentTimeout) clearTimeout(currentTimeout);
     if (currentInterval) clearInterval(currentInterval);
-
+    // definit un timeout : si le joueur ne clique pas a temps, il perd une vie
     currentTimeout = setTimeout(() => {
       loseLife();
     }, survivalTime * 1000);
-
+    // met a jour l'affichage tt les 100 ms
     currentInterval = setInterval(() => {
       updateCountdownDisplay();
     }, 100);
@@ -59,9 +56,7 @@ export function survivalMode() {
     if (lives <= 0) {
       endSurvival();
     } else {
-      $("#countdown .countdown-value").html(
-        `${survivalTime.toFixed(2)}s | Vies : ${lives}`
-      );
+      countdownValue.textContent = `${survivalTime.toFixed(2)}s | Vies : ${lives}`;
       nextRound();
     }
   }
@@ -69,20 +64,28 @@ export function survivalMode() {
   function endSurvival() {
     gameOver = true;
     if (currentInterval) clearInterval(currentInterval);
-    $("#countdown .countdown-value").html("Perdu !");
-    $("#startButton")
-      .show()
-      .text("Rejouer")
-      .off()
-      .click(() => window.location.reload());
+    countdownValue.textContent = "Perdu !";
+
+    // afficher et configurer le bouton "Rejouer"
+    startButton.style.display = "inline-block";
+    startButton.textContent = "Rejouer";
+
+    // supprimer anciens listeners
+    const newButton = startButton.cloneNode(true);
+    startButton.replaceWith(newButton);
+
+    newButton.addEventListener("click", () => window.location.reload());
   }
 
+  // gestion des clics sur les cases
   for (let box of allTheBox) {
     box.onclick = (e) => {
       if (gameOver) return;
+
       if (e.target.id === currentBox) {
         if (currentInterval) clearInterval(currentInterval);
-        score.innerHTML = parseInt(score.innerHTML) + 1;
+
+        score.textContent = parseInt(score.textContent) + 1;
         survivalTime = Math.max(minTime, survivalTime - timeDecrease);
         updateHighscore(mode);
         nextRound();
@@ -91,6 +94,6 @@ export function survivalMode() {
       }
     };
   }
-
+  // lance le premier round automatiquement
   nextRound();
 }
