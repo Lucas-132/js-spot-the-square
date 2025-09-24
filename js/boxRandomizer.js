@@ -1,7 +1,7 @@
-export const randomizedBox = document.getElementById("randomized-box");
-export let currentBox = "a1";
+const randomizedBox = document.getElementById("randomized-box");
+let currentBox = "a1";
 
-export function randomizeBox() {
+function randomizeBox() {
   let letters = "abcdefgh".split("");
   let numbers = "123456789".split("");
   let result = "";
@@ -12,4 +12,10 @@ export function randomizeBox() {
   randomizedBox.innerHTML = result;
   currentBox = result;
   return result;
+}
+
+export{
+  randomizedBox,
+  currentBox,
+  randomizeBox
 }

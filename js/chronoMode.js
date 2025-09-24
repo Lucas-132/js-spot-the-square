@@ -10,7 +10,7 @@ import {
   updateHighscore,
 } from "./setup.js";
 
-function chronoMode() {
+export function chronoMode() {
   // Affichage du highscore selon le mode
   if (mode === "1") {
     highscoreDisplayer.textContent = localStorage.highscore1Min;
@@ -76,5 +76,3 @@ function chronoMode() {
     };
   }
 }
-
-export { chronoMode };
