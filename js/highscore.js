@@ -29,7 +29,7 @@ function updateHighscore(mode){
     }
     else if (mode === "2"){
         if (score.innerHTML > localStorage.highscore2Min){
-            localStorage.highscore1Min = score.innerHTML;
+            localStorage.highscore2Min = score.innerHTML;
             highscoreDisplayer.innerHTML = localStorage.highscore2Min
         }
     }
