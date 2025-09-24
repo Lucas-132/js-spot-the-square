@@ -38,7 +38,7 @@ function chronoMode() {
         startValues: { minutes: parseInt(mode) },
       });
       timerRunning = true;
-      newStartButton.textContent = "Recommencer";
+      newStartButton.textContent = "Arrêter";
       randomizeBox();
     } else {
 
