@@ -22,7 +22,7 @@ export function survivalMode() {
   score.textContent = "0";
 
   const countdownValue = document.querySelector("#countdown .countdown-value");
-  const startButton = document.getElementById("startButton");
+  const startButton = document.getElementById("start-button");
 
   function updateCountdownDisplay() {
     if (!roundStart) return;

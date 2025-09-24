@@ -15,7 +15,7 @@ if (mode === "survival") {
   if player selects chrono game mode)*/
   highscoreDisplayer.innerHTML = localStorage.highscoreSurvival
   $("#countdown .countdown-value").html("3.00s | Vies : 3");
-  $("#startButton")
+  $("#start-button")
     .off()
     .show()
     .text("Commencer")

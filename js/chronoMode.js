@@ -25,9 +25,9 @@ function chronoMode() {
   let timerRunning = false;
 
   // Bouton démarrer / recommencer
-  const startButton = document.getElementById("startButton");
+  const startButton = document.getElementById("start-button");
   startButton.replaceWith(startButton.cloneNode(true)); // supprime anciens listeners
-  const newStartButton = document.getElementById("startButton");
+  const newStartButton = document.getElementById("start-button");
 
   newStartButton.addEventListener("click", () => {
     score.textContent = "0";
