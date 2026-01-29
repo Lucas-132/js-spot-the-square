@@ -1,4 +1,6 @@
 # js-spot-the-square
+<img width="800" height="726" alt="image" src="https://github.com/user-attachments/assets/51ac4050-2d03-43bd-b200-701a99b90573" />
+
 # Used technologies
 In order to achieve this project, we used Html CSS and Javascript so as to make this app web friendly. We tried to divide our Javascript as much as possible using multiple files inside which we would mainly define all functions needed for the main script to work properly. 
 
